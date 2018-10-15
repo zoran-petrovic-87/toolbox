@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="ZoranSoftwareToolbox.jnlp">
+  <information>
+    <title>ZoranSoftwareToolbox</title>
+    <vendor>Zoran Petrovi?</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="ZoranSoftwareToolbox.jar" size="85192" download="eager" />
+    <jar href="lib\commons-lang3-3.8.1-javadoc.jar" size="1337352" download="eager" />
+    <jar href="lib\commons-lang3-3.8.1-sources.jar" size="553442" download="eager" />
+    <jar href="lib\commons-lang3-3.8.1.jar" size="501879" download="eager" />
+    <jar href="lib\metadata-extractor-2.6.4-src.jar" size="2417954" download="eager" />
+    <jar href="lib\metadata-extractor-2.6.4.jar" size="174637" download="eager" />
+    <jar href="lib\xmpcore.jar" size="89877" download="eager" />
+  </resources>
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="ZoranSoftwareToolbox" >
+    <param name="requiredFXVersion" value="8.0+"/>
+  </applet-desc>
+  <jfx:javafx-desc  width="800" height="600" main-class="com.zoran_software.toolbox.ZoranSoftwareToolbox"  name="ZoranSoftwareToolbox" />
+  <update check="always"/>
+</jnlp>
