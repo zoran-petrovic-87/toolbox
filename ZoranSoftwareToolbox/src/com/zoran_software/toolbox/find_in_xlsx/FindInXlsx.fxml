@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" prefHeight="360.0" prefWidth="414.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zoran_software.toolbox.find_in_xlsx.FindInXlsxController">
+   <children>
+      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+        <tabs>
+          <Tab text="%Find">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox layoutX="-57.0" layoutY="47.0" prefHeight="347.0" prefWidth="428.0" spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Label text="%Directory" />
+                                    <TextField fx:id="txtDirectory" HBox.hgrow="ALWAYS" />
+                                    <Button mnemonicParsing="false" onAction="#browseDirectory" text="%Browse" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Label text="%Keyword_to_find" />
+                                    <TextField fx:id="txtInput" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
+                              <Separator prefWidth="200.0" />
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Button fx:id="btnRun" mnemonicParsing="false" onAction="#run" text="%Find" />
+                                    <ProgressBar fx:id="progressBar" maxWidth="1.7976931348623157E308" progress="0.0" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
+                              <TextArea fx:id="txtOutput" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+                              <HBox>
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#saveAs" text="%Save_results" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="%Settings">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                           <children>
+                              <Label text="%Search_type" />
+                              <HBox spacing="5.0">
+                                 <children>
+                                    <RadioButton fx:id="radioBtnModeEqual" mnemonicParsing="false" selected="true" text="%Equals">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="toggleGroupMode" />
+                                       </toggleGroup>
+                                    </RadioButton>
+                                    <RadioButton fx:id="radioBtnModeContains" mnemonicParsing="false" text="%Contains" toggleGroup="$toggleGroupMode" />
+                                    <RadioButton fx:id="radioBtnModeStartsWith" mnemonicParsing="false" text="%Starts_with" toggleGroup="$toggleGroupMode" />
+                                    <RadioButton fx:id="radioBtnModeEndsWith" mnemonicParsing="false" text="%Ends_with" toggleGroup="$toggleGroupMode" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <CheckBox fx:id="chkIgnoreCase" mnemonicParsing="false" selected="true" text="%Ignore_case" />
+                                 </children>
+                              </HBox>
+                              <Separator prefWidth="200.0" />
+                              <Label text="%Only_search_in" />
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Label text="%Row_number" />
+                                    <TextField fx:id="txtSearchRow" prefWidth="50.0" />
+                                    <Label text="%Column_number" />
+                                    <TextField fx:id="txtSearchColumn" prefWidth="50.0" />
+                                 </children>
+                              </HBox>
+                              <Separator prefWidth="200.0" />
+                              <CheckBox fx:id="chkOpenFile" mnemonicParsing="false" text="%Open_file" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="%About">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label alignment="TOP_LEFT" layoutX="54.0" layoutY="21.0" text="%About_text" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

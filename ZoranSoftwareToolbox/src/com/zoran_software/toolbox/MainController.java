@@ -71,6 +71,15 @@ public class MainController implements Initializable {
     }
 
     @FXML
+    private void showFindInXlsx() throws IOException {
+        String sRb = "com/zoran_software/toolbox/find_in_xlsx/bundles/lang";
+        String fxml = "find_in_xlsx/FindInXlsx.fxml";
+        String title = rb.getString("menu.find_in_xlsx");
+        ResourceBundle tabRb = ResourceBundle.getBundle(sRb);
+        UtilityJfxInterface.addNewTab(fxml, tabRb, title, tabPane, false);
+    }
+
+    @FXML
     private void showTransliterationOfCyrillic() throws IOException {
         String sRb = "com/zoran_software/toolbox/transliteration_of_cyrillic/bundles/lang";
         String fxml = "transliteration_of_cyrillic/TransliterationOfCyrillic.fxml";

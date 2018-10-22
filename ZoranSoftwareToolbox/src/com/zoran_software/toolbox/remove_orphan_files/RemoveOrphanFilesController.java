@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
+import java.util.prefs.Preferences;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -47,6 +48,7 @@ import javafx.scene.control.TextField;
 public class RemoveOrphanFilesController implements Initializable {
 
     private ResourceBundle rb;
+    final Preferences pref = Preferences.userRoot().node(this.getClass().getSimpleName());
     private String parentExtension;
     private List<String> childrenExtensions;
     private File directory;
@@ -73,12 +75,31 @@ public class RemoveOrphanFilesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.rb = rb;
+        // Load preferences
+        txtParentExtension.setText(pref.get("ParentExtension", ""));
+        txtChildrenExtensions.setText(pref.get("ChildrenExtensions", ""));
+        chkAllowParentExtInChildName.setSelected(pref.getBoolean("AllowParentExtInChildName", true));
+    }
+
+    @FXML
+    private void browseDirectory(ActionEvent event) {
+        String selectedDirectory = UtilityJfxInterface.browseForDirectory(event, rb.getString("Select_directory"));
+        if (selectedDirectory != null) {
+            txtDirectory.setText(selectedDirectory);
+        }
     }
 
     @FXML
     private void find(ActionEvent event) {
         // Get directory.
         directory = new File(txtDirectory.getText());
+        if (directory.length() < 1) {
+            UtilityJfxInterface.showWarningAlert(
+                    rb.getString("Warning"),
+                    rb.getString("Please_select_directory"),
+                    "");
+            return;
+        }
         // Get parent extension.
         parentExtension = txtParentExtension.getText().toLowerCase();
         if (!parentExtension.startsWith(".")) {
@@ -137,6 +158,10 @@ public class RemoveOrphanFilesController implements Initializable {
                         rb.getString("Info"),
                         rb.getString("Done"),
                         "");
+                // Save preferences
+                pref.put("ParentExtension", "" + txtParentExtension.getText());
+                pref.put("ChildrenExtensions", "" + txtChildrenExtensions.getText());
+                pref.putBoolean("AllowParentExtInChildName", chkAllowParentExtInChildName.isSelected());
             } catch (InterruptedException | ExecutionException ex) {
                 UtilityJfxInterface.showErrorAlert(
                         rb.getString("Unknown_error"),
@@ -210,14 +235,6 @@ public class RemoveOrphanFilesController implements Initializable {
         Thread t = new Thread(task);
         t.setDaemon(true);
         t.start();
-    }
-
-    @FXML
-    private void browseDirectory(ActionEvent event) {
-        String selectedDirectory = UtilityJfxInterface.browseForDirectory(event);
-        if (selectedDirectory != null) {
-            txtDirectory.setText(selectedDirectory);
-        }
     }
 
 }

@@ -39,7 +39,10 @@ public class TaskFindOrphanFiles extends Task<List<String>> {
     final private File directory;
     final private boolean allowParentExtInChildName;
 
-    public TaskFindOrphanFiles(String parentExtension, List<String> childrenExtensions, File directory,
+    public TaskFindOrphanFiles(
+            String parentExtension,
+            List<String> childrenExtensions,
+            File directory,
             boolean allowParentExtInChildName) {
         this.parentExtension = parentExtension;
         this.childrenExtensions = childrenExtensions;

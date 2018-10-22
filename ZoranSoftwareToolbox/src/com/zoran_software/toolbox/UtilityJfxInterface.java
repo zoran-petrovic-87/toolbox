@@ -23,8 +23,13 @@
  */
 package com.zoran_software.toolbox;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -35,6 +40,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
@@ -45,12 +51,15 @@ public class UtilityJfxInterface {
 
     /**
      * Shows the directory chooser.
+     *
      * @param event The action event.
-     * @return The directory path.
+     * @param directoryChooserTitle The directory chooser title.
+     * @return The directory absolute path.
      */
-    public static String browseForDirectory(ActionEvent event) {
+    public static String browseForDirectory(ActionEvent event, String directoryChooserTitle) {
         Stage stage = Stage.class.cast(Control.class.cast(event.getSource()).getScene().getWindow());
         DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle(directoryChooserTitle);
         File selectedDirectory = directoryChooser.showDialog(stage);
         if (selectedDirectory != null) {
             return selectedDirectory.getAbsolutePath();
@@ -59,32 +68,54 @@ public class UtilityJfxInterface {
     }
 
     /**
-     * Adds a new tab to the specified tab pane.
      *
-     * @param fxml The FXML resource.
-     * @param rb The resource bundle.
-     * @param title The tab title.
-     * @param tabPane The tab pane.
-     * @param unique If <code>true</code> new tab will not be created if a tab with the same title already exists.
-     * @throws IOException
+     * @param event The action event.
+     * @param text The text to save.
+     * @param fileChooserTitle The file chooser title.
+     * @param alertSuccessTitle The success alert title.
+     * @param alertSuccessHeader The success alert header.
+     * @param alertSuccessContent The success alert content.
+     * @param alertErrorTitle The error alert title.
+     * @param alertErrorHeader The error alert header.
+     * @param alertErrorContent The error alert content.
+     * @return The file absolute path.
      */
-    public static void addNewTab(String fxml, ResourceBundle rb, String title, TabPane tabPane, boolean unique)
-            throws IOException {
-        if (unique) {
-            for (Tab tab : tabPane.getTabs()) {
-                if (tab.getText().equals(title)) {
-                    return;
-                }
+    public static String saveAsTxtFile(
+            ActionEvent event,
+            String text,
+            String fileChooserTitle,
+            String alertSuccessTitle,
+            String alertSuccessHeader,
+            String alertSuccessContent,
+            String alertErrorTitle,
+            String alertErrorHeader,
+            String alertErrorContent
+    ) {
+        Stage stage = Stage.class.cast(Control.class.cast(event.getSource()).getScene().getWindow());
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+        fileChooser.setTitle(fileChooserTitle);
+        File file = fileChooser.showSaveDialog(stage);
+        if (file != null) {
+            try {
+                BufferedWriter bw = Files.newBufferedWriter(
+                        Paths.get(file.getAbsolutePath()), StandardCharsets.UTF_8, StandardOpenOption.CREATE);
+                bw.write(text);
+                bw.close();
+                UtilityJfxInterface.showInfoAlert(
+                        alertSuccessTitle,
+                        alertSuccessHeader,
+                        alertSuccessContent);
+            } catch (IOException ex) {
+                UtilityJfxInterface.showErrorAlert(
+                        alertErrorTitle,
+                        alertErrorHeader,
+                        alertErrorContent + "\n\n" + ex.getMessage());
             }
+            return file.getAbsolutePath();
         }
-        FXMLLoader fxmlLoader = new FXMLLoader(UtilityJfxInterface.class.getResource(fxml), rb);
-        AnchorPane ap = (AnchorPane) fxmlLoader.load();
-        Tab tab = new Tab();
-        tab.setText(title);
-        tab.setContent(ap);
-        tabPane.getTabs().add(tab);
-        SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
-        selectionModel.select(tab);
+        return null;
     }
 
     /**
@@ -130,5 +161,34 @@ public class UtilityJfxInterface {
         alert.setHeaderText(header);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    /**
+     * Adds a new tab to the specified tab pane.
+     *
+     * @param fxml The FXML resource.
+     * @param rb The resource bundle.
+     * @param title The tab title.
+     * @param tabPane The tab pane.
+     * @param unique If <code>true</code> new tab will not be created if a tab with the same title already exists.
+     * @throws IOException
+     */
+    public static void addNewTab(String fxml, ResourceBundle rb, String title, TabPane tabPane, boolean unique)
+            throws IOException {
+        if (unique) {
+            for (Tab tab : tabPane.getTabs()) {
+                if (tab.getText().equals(title)) {
+                    return;
+                }
+            }
+        }
+        FXMLLoader fxmlLoader = new FXMLLoader(UtilityJfxInterface.class.getResource(fxml), rb);
+        AnchorPane ap = (AnchorPane) fxmlLoader.load();
+        Tab tab = new Tab();
+        tab.setText(title);
+        tab.setContent(ap);
+        tabPane.getTabs().add(tab);
+        SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
+        selectionModel.select(tab);
     }
 }

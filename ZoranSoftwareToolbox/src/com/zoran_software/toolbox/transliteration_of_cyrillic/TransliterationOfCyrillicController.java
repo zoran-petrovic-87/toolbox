@@ -24,12 +24,8 @@
 package com.zoran_software.toolbox.transliteration_of_cyrillic;
 
 import com.zoran_software.toolbox.UtilityJfxInterface;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -97,8 +93,7 @@ public class TransliterationOfCyrillicController implements Initializable {
         cboTransliterationTable.getItems().clear();
         cboTransliterationTable.getItems().addAll(FXCollections.observableArrayList(items));
         // Load preferences.
-        cboTransliterationTable.getSelectionModel().select(
-                Integer.parseInt(pref.get("TransliterationTable", "0")));
+        cboTransliterationTable.getSelectionModel().select(pref.getInt("TransliterationTable", 0));
         eventScriptChanged();
     }
 
@@ -120,30 +115,16 @@ public class TransliterationOfCyrillicController implements Initializable {
 
     @FXML
     private void saveAs(ActionEvent event) {
-        Stage stage = Stage.class.cast(Control.class.cast(event.getSource()).getScene().getWindow());
-        fileChooser.setTitle(rb.getString("Save"));
-        File file = fileChooser.showSaveDialog(stage);
-        if (file != null) {
-            String filePath = file.getAbsolutePath();
-            if (!file.getName().contains(".")) {
-                filePath = filePath + ".txt";
-            }
-            try {
-                Writer out = new BufferedWriter(
-                        new OutputStreamWriter(new FileOutputStream(filePath), StandardCharsets.UTF_8));
-                out.write(txtInput.getText());
-                out.close();
-                UtilityJfxInterface.showInfoAlert(
-                        rb.getString("Info"),
-                        rb.getString("Saved"),
-                        "");
-            } catch (IOException ex) {
-                UtilityJfxInterface.showErrorAlert(
-                        rb.getString("Unknown_error"),
-                        "",
-                        ex.getMessage());
-            }
-        }
+        UtilityJfxInterface.saveAsTxtFile(
+                event,
+                txtInput.getText(),
+                "",
+                rb.getString("Info"),
+                rb.getString("Saved"),
+                "",
+                rb.getString("Error"),
+                rb.getString("Error"),
+                "");
     }
 
     @FXML
@@ -168,8 +149,7 @@ public class TransliterationOfCyrillicController implements Initializable {
             try {
                 txtInput.setText(task.get());
                 // Save preferences
-                pref.put("TransliterationTable", ""
-                        + cboTransliterationTable.getSelectionModel().getSelectedIndex());
+                pref.putInt("TransliterationTable", cboTransliterationTable.getSelectionModel().getSelectedIndex());
             } catch (InterruptedException | ExecutionException ex) {
                 UtilityJfxInterface.showErrorAlert(
                         rb.getString("Unknown_error"),
@@ -193,8 +173,7 @@ public class TransliterationOfCyrillicController implements Initializable {
             try {
                 txtInput.setText(task.get());
                 // Save preferences
-                pref.put("TransliterationTable", ""
-                        + cboTransliterationTable.getSelectionModel().getSelectedIndex());
+                pref.putInt("TransliterationTable", cboTransliterationTable.getSelectionModel().getSelectedIndex());
             } catch (InterruptedException | ExecutionException ex) {
                 UtilityJfxInterface.showErrorAlert(
                         rb.getString("Unknown_error"),
